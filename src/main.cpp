@@ -22,7 +22,7 @@ int main() {
                 token1 = c.access(t,1);
                 token2 = c.access(t,2);
 
-                for (int i = 0;i < c.commands.size();i++) {
+                for (long unsigned int i = 0;i < c.commands.size();i++) {
                         if (c.commands[i] == command) {
                                 std::cout << "Command index: " << i << endl;
                                 break;

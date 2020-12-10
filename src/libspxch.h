@@ -35,7 +35,7 @@ public:
                 }
 
 
-                for (int i = 0;i < commands.size();i++ ) {
+                for (long unsigned int i = 0;i < commands.size();i++ ) {
                  std::cout << "Loaded command: " << commands[i] << std::endl;
                }
                 file.close();
@@ -48,7 +48,7 @@ public:
             std::string args[256];
             process(str,args);
 
-        for (int i = 0; i < commands.size();i++) {
+        for (long unsigned int i = 0; i < commands.size();i++) {
                 if (args[0]  == commands[i]) {
                      return args[accint];
                 }
