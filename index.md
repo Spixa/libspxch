@@ -1,37 +1,53 @@
-## Welcome to GitHub Pages
+# libspxch
+This is the library version of [Spixa-Command-Handler](https://github.com/Spixa/CommandHandler-OpenSource) that handles commands and arguments. This library allows you to load a command list from a file and be able to compile and add it to your project as a command with a collection of strings as argument sheet. You can use and manage your command afterwards as you wish.
+## How to port libspxch to your project
+libspxch does not contain any additional libraries and also for convenience it is all bound in a single header file.
+### Link to your project
+Add libspxch.h to the header file section of your compiler (e.g. _g++ main.cpp libspxch.h -o my_bin_)
 
-You can use the [editor on GitHub](https://github.com/Spixa/libspxch/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+## Documentation and how to use
+Here you can see the basic documentation and tutorial of this library
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+# Documentation
+***
 
-### Markdown
+# Load a command list
+The first thing you need to do is to load the command list. You can set the command-list file in the CommandHandle class constructor:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+`CommandHandle c("my_command_list.txt")`
 
-```markdown
-Syntax highlighted code block
+## Command list file:
+Commands are divided by a whitespace. A command list file will look like this:  
+help info test_command another_command   
+  
+In the example at /src/main.cpp you can see how it works in action.
 
-# Header 1
-## Header 2
-### Header 3
+# Get user input and divide the input by whitespace
+When you get a user input from a user using `std::getline(std::cin, myString)` it reads everything the user has inputted and saves them to `myString`, however in libspxch you can solve the string into: 
+* The command 
+* The argument sheet
 
-- Bulleted
-- List
+***
 
-1. Numbered
-2. List
+The way you do that is by using the access function from the CommandHandle class.
+Let's solve the input "say hello":  
+> std::string command,arg1 // The buffers for the command and the first argument.  
+> CommandHandle handle("cmds.txt"); // Note: cmds.txt should contain the "say" command.  
+> command = handle.access(user_Input,0) // returns the command  
+> arg1 = handle.access(user_Input,1) // returns the first argument  
 
-**Bold** and _Italic_ and `Code` text
+You can add a for loop which checks if the command exists in the cmds.txt (the whole purpose of the file, right?)  
 
-[Link](url) and ![Image](src)
-```
+> for (long unsigned int i = 0;i < c.commands.size();i++) {  
+>                           if (c.commands[i] == command) {  
+>                                 std::cout << "Command index: " << i << endl;  
+>                                 break;  
+>                         }  
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+  
+When you add this for loop if the command didn't exist in the cmds.txt it will return: `$unhandled`  
+You can use an if statement that checks if `command` is equals to `"$unhandled"` and that means user has inputted a non-existing command  
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Spixa/libspxch/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+***
+# Make use of commands
+Now after we have set up all the good stuff, we can make use of this library, and that is by checking the value of "command" and token (argument 1) "arg1"  
